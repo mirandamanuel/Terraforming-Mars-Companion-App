@@ -1,6 +1,7 @@
 package com.example.tmcompanion
 
 import android.graphics.Color
+import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.Color as RGBColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,89 +57,59 @@ class MainActivity : ComponentActivity() {
                     Row(modifier = Modifier) {
                         //Credits
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.ShoppingCart ,
-                                 contentDescription = null,
-                                 modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = creditsProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Credits", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Credits", currentVal = creditsProd)
                         }
                         //Steel
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.Build ,
-                                contentDescription = null,
-                                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = steelProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Steel", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Steel", currentVal = steelProd)
                         }
                     }
                     Row(modifier = Modifier) {
                         //Titanium
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.Star ,
-                                contentDescription = null,
-                                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = titaniumProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Titanium", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Titanium", currentVal = titaniumProd)
                         }
                         //Plants
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.Place ,
-                                contentDescription = null,
-                                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = plantsProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Plants", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Plants", currentVal = plantsProd)
                         }
                     }
                     Row(modifier = Modifier) {
                         //Energy
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.Warning ,
-                                contentDescription = null,
-                                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = energyProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Energy", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Energy", currentVal = energyProd)
                         }
                         //Heat
                         Column(modifier = Modifier) {
-                            Icon(imageVector = Icons.Default.ExitToApp ,
-                                contentDescription = null,
-                                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
-                            Row {
-                                Icon(imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null)
-                                Text(text = heatProd.toString())
-                                Icon(imageVector = Icons.Default.ArrowForward ,
-                                    contentDescription = null)
-                            }
+                            ResourceTile(name = "Heat", icon = Icons.Default.ShoppingCart)
+                            ProductionRow(resource = "Heat", currentVal = heatProd)
                         }
                     }
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun ResourceTile(name: String, icon: ImageVector){
+    Icon(imageVector = icon ,
+        contentDescription = name ,
+        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 0.dp))
+}
+@Composable
+fun ProductionRow(resource: String, currentVal: Int){
+    Row{
+        Icon(imageVector = Icons.Default.ArrowBack ,
+            contentDescription = null)
+        Text(text = currentVal.toString())
+        Icon(imageVector = Icons.Default.ArrowForward ,
+            contentDescription = null)
     }
 }
