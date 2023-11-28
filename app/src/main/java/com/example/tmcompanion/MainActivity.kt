@@ -8,11 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -25,6 +22,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,21 +34,14 @@ import androidx.compose.ui.unit.dp
 import com.example.tmcompanion.ui.theme.TerraformingMarsCompanionAppTheme
 import androidx.compose.ui.graphics.Color as RGBColor
 
+val credits = Resource(0 ,0)
+val steel = Resource(0 ,0)
+val titanium = Resource(0 ,0)
+val plants = Resource(0 ,0)
+val energy = Resource(0 ,0)
+val heat = Resource(0 ,0)
 
 class MainActivity : ComponentActivity() {
-    var creditsProd = 0
-    var steelProd = 0
-    var titaniumProd = 0
-    var plantsProd = 0
-    var energyProd = 0
-    var heatProd = 0
-
-    var credits = 0
-    var steel = 0
-    var titanium = 0
-    var plants = 0
-    var energy = 0
-    var heat = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -77,7 +70,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Credits",
                                 icon = ImageVector.vectorResource(R.drawable.credit_icon))
-                            ProductionRow(credits, creditsProd)
+
+                            ProductionRow(credits)
                         }
                         //Steel
                         Column(
@@ -87,7 +81,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Steel",
                                 icon = ImageVector.vectorResource(R.drawable.steel_icon))
-                            ProductionRow(steel, steelProd)
+                            ProductionRow(steel)
                         }
                     }
                     //Row 2
@@ -106,7 +100,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Titanium",
                                 icon = ImageVector.vectorResource(R.drawable.titanium_icon))
-                            ProductionRow(titanium, titaniumProd)
+
+                            ProductionRow(titanium)
                         }
                         //Plants
                         Column(
@@ -116,7 +111,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Plants",
                                 icon = ImageVector.vectorResource(R.drawable.plants_icon))
-                            ProductionRow(plants, plantsProd)
+                            ProductionRow(plants)
                         }
                     }
                     //Row 3
@@ -135,7 +130,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Energy",
                                 icon = ImageVector.vectorResource(R.drawable.energy_icon))
-                            ProductionRow(energy, energyProd)
+                            ProductionRow(energy)
                         }
                         //Heat
                         Column(
@@ -145,7 +140,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             ResourceTile(name = "Heat",
                                 icon = ImageVector.vectorResource(R.drawable.heat_icon))
-                            ProductionRow(heat, heatProd)
+                            ProductionRow(heat)
                         }
                     }
 
@@ -177,7 +172,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun ResourceTile(name: String, icon: ImageVector){
     Icon(imageVector = icon ,
@@ -188,31 +182,36 @@ fun ResourceTile(name: String, icon: ImageVector){
         tint = Color.Unspecified)
 }
 @Composable
-fun ProductionRow(resource: Int, resourceProd: Int){
-    Row{
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Default.ArrowBack ,
-                contentDescription = null)
-        }
+fun ProductionRow(resource: Resource){
+    val i = remember { mutableStateOf(0) }
+    key(i.value){
+        Row{
+            IconButton(onClick = {
+                resource.setProduction(resource.getProduction() - 1)
+                println(resource.getProduction())
+                i.value = resource.getProduction()
+            }) {
+                Icon(imageVector = Icons.Default.ArrowBack ,
+                    contentDescription = null)
+            }
 
-        Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp), text = resource.toString())
+            Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp),
+                text = resource.getValue().toString())
 
-        Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp),
-            color = RGBColor(0, 150, 0),
-            text = " (+$resourceProd)")
+            Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp),
+                color = RGBColor(0, 150, 0),
+                text = " (+${resource.getProduction()})")
 
 
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Default.ArrowForward ,
-                contentDescription = null)
+            IconButton(onClick = {
+                resource.setProduction(resource.getProduction() + 1)
+                println(resource.getProduction())
+                i.value = resource.getProduction()
+            }) {
+                Icon(imageVector = Icons.Default.ArrowForward ,
+                    contentDescription = null)
+            }
         }
     }
-}
 
-fun getScreenWidth(): Int {
-    return Resources.getSystem().displayMetrics.widthPixels
-}
-
-fun getScreenHeight(): Int {
-    return Resources.getSystem().displayMetrics.heightPixels
 }
