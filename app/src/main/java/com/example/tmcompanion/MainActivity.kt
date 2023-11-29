@@ -46,130 +46,142 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TerraformingMarsCompanionAppTheme {
-                Column(modifier = Modifier
-                    .background(RGBColor(101, 20, 0))
-                    .padding(16.dp)
-                    .background(RGBColor.LightGray)
-                    .fillMaxSize() ,
+                MainScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun MainScreen(){
+    val state = remember { mutableStateOf(false) }
+    key(state.value){
+        Column(modifier = Modifier
+            .background(RGBColor(101, 20, 0))
+            .padding(16.dp)
+            .background(RGBColor.LightGray)
+            .fillMaxSize() ,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            //Row 1
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                //Credits
+                Column(
+                    modifier = Modifier,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    //Row 1
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        //Credits
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Credits",
-                                icon = ImageVector.vectorResource(R.drawable.credit_icon))
+                    ResourceTile(name = "Credits",
+                        icon = ImageVector.vectorResource(R.drawable.credit_icon))
 
-                            ProductionRow(credits)
-                        }
-                        //Steel
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Steel",
-                                icon = ImageVector.vectorResource(R.drawable.steel_icon))
-                            ProductionRow(steel)
-                        }
-                    }
-                    //Row 2
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        //Titanium
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Titanium",
-                                icon = ImageVector.vectorResource(R.drawable.titanium_icon))
+                    ProductionRow(credits)
+                }
+                //Steel
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    ResourceTile(name = "Steel",
+                        icon = ImageVector.vectorResource(R.drawable.steel_icon))
+                    ProductionRow(steel)
+                }
+            }
+            //Row 2
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                //Titanium
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    ResourceTile(name = "Titanium",
+                        icon = ImageVector.vectorResource(R.drawable.titanium_icon))
 
-                            ProductionRow(titanium)
-                        }
-                        //Plants
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Plants",
-                                icon = ImageVector.vectorResource(R.drawable.plants_icon))
-                            ProductionRow(plants)
-                        }
-                    }
-                    //Row 3
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        //Energy
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Energy",
-                                icon = ImageVector.vectorResource(R.drawable.energy_icon))
-                            ProductionRow(energy)
-                        }
-                        //Heat
-                        Column(
-                            modifier = Modifier,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceAround
-                        ) {
-                            ResourceTile(name = "Heat",
-                                icon = ImageVector.vectorResource(R.drawable.heat_icon))
-                            ProductionRow(heat)
-                        }
-                    }
+                    ProductionRow(titanium)
+                }
+                //Plants
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    ResourceTile(name = "Plants",
+                        icon = ImageVector.vectorResource(R.drawable.plants_icon))
+                    ProductionRow(plants)
+                }
+            }
+            //Row 3
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                //Energy
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    ResourceTile(name = "Energy",
+                        icon = ImageVector.vectorResource(R.drawable.energy_icon))
+                    ProductionRow(energy)
+                }
+                //Heat
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    ResourceTile(name = "Heat",
+                        icon = ImageVector.vectorResource(R.drawable.heat_icon))
+                    ProductionRow(heat)
+                }
+            }
 
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly){
-                        //Add resources button
-                        Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
-                            Text(text = "Add Resources")
-                        }
+            Row(horizontalArrangement = Arrangement.SpaceEvenly){
+                //Add resources button
+                Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
+                    Text(text = "Add Resources")
+                }
 
-                        //Spend resources button
-                        Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
-                            Text(text = "Spend Resources")
-                        }
-                    }
+                //Spend resources button
+                Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
+                    Text(text = "Spend Resources")
+                }
+            }
 
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                        Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
-                            Text(text = "End Turn")
-                        }
+            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                Button(modifier = Modifier.padding(8.dp), onClick = {/*TODO*/}) {
+                    Text(text = "End Turn")
+                }
 
-                        //End round button: Automates end of round actions
-                        Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
-                            Text(text = "End Round")
-                        }
-                    }
+                //End round button: Automates end of round actions
+                Button(modifier = Modifier.padding(8.dp), onClick = {
+                    roundEndResourcePayout()
+                    state.value = !state.value
+                }){
+                    Text(text = "End Round")
                 }
             }
         }
     }
+
 }
 
 @Composable
@@ -213,5 +225,13 @@ fun ProductionRow(resource: Resource){
             }
         }
     }
+}
 
+fun roundEndResourcePayout(){
+    credits.setValue(credits.getValue() + credits.getProduction())
+    steel.setValue(steel.getValue() + steel.getProduction())
+    titanium.setValue(titanium.getValue() + titanium.getProduction())
+    plants.setValue(plants.getValue() + plants.getProduction())
+    energy.setValue(energy.getValue() + energy.getProduction())
+    heat.setValue(heat.getValue() + heat.getProduction())
 }
