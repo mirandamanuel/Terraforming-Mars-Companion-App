@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.example.tmcompanion.ui.theme.TerraformingMarsCompanionAppTheme
 import androidx.compose.ui.graphics.Color as RGBColor
 
@@ -55,6 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(){
     val state = remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false)}
     key(state.value){
         Column(modifier = Modifier
             .background(RGBColor(101, 20, 0))
@@ -110,7 +113,6 @@ fun MainScreen(){
                 ) {
                     ResourceTile(name = "Titanium",
                         icon = ImageVector.vectorResource(R.drawable.titanium_icon))
-
                     ProductionRow(titanium)
                 }
                 //Plants
@@ -156,7 +158,7 @@ fun MainScreen(){
 
             Row(horizontalArrangement = Arrangement.SpaceEvenly){
                 //Add resources button
-                Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
+                Button(modifier = Modifier.padding(8.dp), onClick = {showDialog.value = true}) {
                     Text(text = "Add Resources")
                 }
 
@@ -193,6 +195,28 @@ fun ResourceTile(name: String, icon: ImageVector){
             .size(125.dp) ,
         tint = Color.Unspecified)
 }
+
+@Composable
+fun ResourceQuantity(modifier: Modifier = Modifier, resource: Resource){
+    Box(modifier = modifier){
+        Text(text = resource.getValue().toString())
+    }
+}
+
+@Composable
+fun ResourceProduction(modifier: Modifier = Modifier, resource: Resource){
+    Box(modifier = modifier){
+        var text = "(+${resource.getProduction()})"
+        var textColor = RGBColor(0, 150, 0)
+        if(resource.getProduction() < 0){
+            textColor = RGBColor(200, 0, 0)
+            text = "(${resource.getProduction()})"
+        }
+        Text(text = text,
+            color = textColor)
+    }
+}
+
 @Composable
 fun ProductionRow(resource: Resource){
     val i = remember { mutableStateOf(0) }
@@ -206,14 +230,11 @@ fun ProductionRow(resource: Resource){
                 Icon(imageVector = Icons.Default.ArrowBack ,
                     contentDescription = null)
             }
+            ResourceQuantity(resource = resource,
+                modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
 
-            Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp),
-                text = resource.getValue().toString())
-
-            Text(modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp),
-                color = RGBColor(0, 150, 0),
-                text = " (+${resource.getProduction()})")
-
+            ResourceProduction(resource = resource,
+                modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
 
             IconButton(onClick = {
                 resource.setProduction(resource.getProduction() + 1)
