@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import com.example.tmcompanion.ui.theme.TerraformingMarsCompanionAppTheme
 import androidx.compose.ui.graphics.Color as RGBColor
 
@@ -48,16 +49,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TerraformingMarsCompanionAppTheme {
-                MainScreen()
+                Navigation()
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(){
+fun MainScreen(navController: NavController){
     val state = remember { mutableStateOf(false) }
-    val showDialog = remember { mutableStateOf(false)}
     key(state.value){
         Column(modifier = Modifier
             .background(RGBColor(101, 20, 0))
@@ -158,7 +158,8 @@ fun MainScreen(){
 
             Row(horizontalArrangement = Arrangement.SpaceEvenly){
                 //Add resources button
-                Button(modifier = Modifier.padding(8.dp), onClick = {showDialog.value = true}) {
+                Button(modifier = Modifier.padding(8.dp), onClick = {
+                    navController.navigate(Screen.AddResourcesScreen.route)}) {
                     Text(text = "Add Resources")
                 }
 
@@ -184,6 +185,107 @@ fun MainScreen(){
         }
     }
 
+}
+
+@Composable
+fun AddResourcesScreen() {
+    Column(modifier = Modifier
+        .background(RGBColor(101, 20, 0))
+        .padding(16.dp)
+        .background(RGBColor.LightGray)
+        .fillMaxSize() ,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround
+    ) {
+        //Row 1
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            //Credits
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Credits",
+                    icon = ImageVector.vectorResource(R.drawable.credit_icon))
+
+                ProductionRow(credits)
+            }
+            //Steel
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Steel",
+                    icon = ImageVector.vectorResource(R.drawable.steel_icon))
+                ProductionRow(steel)
+            }
+        }
+        //Row 2
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            //Titanium
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Titanium",
+                    icon = ImageVector.vectorResource(R.drawable.titanium_icon))
+                ProductionRow(titanium)
+            }
+            //Plants
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Plants",
+                    icon = ImageVector.vectorResource(R.drawable.plants_icon))
+                ProductionRow(plants)
+            }
+        }
+        //Row 3
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            //Energy
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Energy",
+                    icon = ImageVector.vectorResource(R.drawable.energy_icon))
+                ProductionRow(energy)
+            }
+            //Heat
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                ResourceTile(name = "Heat",
+                    icon = ImageVector.vectorResource(R.drawable.heat_icon))
+                ProductionRow(heat)
+            }
+        }
+    }
 }
 
 @Composable
