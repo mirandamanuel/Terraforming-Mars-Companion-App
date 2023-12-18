@@ -14,7 +14,7 @@ fun Navigation() {
         }
 
         composable(route = Screen.AddResourcesScreen.route){
-            AddResourcesScreen()
+            AddResourcesScreen(navController)
         }
     }
 }

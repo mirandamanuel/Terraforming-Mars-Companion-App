@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -156,39 +157,29 @@ fun MainScreen(navController: NavController){
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.SpaceEvenly){
-                //Add resources button
-                Button(modifier = Modifier.padding(8.dp), onClick = {
-                    navController.navigate(Screen.AddResourcesScreen.route)}) {
-                    Text(text = "Add Resources")
-                }
 
-                //Spend resources button
-                Button(modifier = Modifier.padding(8.dp), onClick = { /*TODO*/ }) {
-                    Text(text = "Spend Resources")
-                }
+            //Add resources button
+            Button(modifier = Modifier.padding(8.dp), onClick = {
+                navController.navigate(Screen.AddResourcesScreen.route)}) {
+                Text(text = "Add/Spend Resources")
             }
 
-            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                Button(modifier = Modifier.padding(8.dp), onClick = {/*TODO*/}) {
-                    Text(text = "End Turn")
-                }
 
-                //End round button: Automates end of round actions
-                Button(modifier = Modifier.padding(8.dp), onClick = {
-                    roundEndResourcePayout()
-                    state.value = !state.value
-                }){
-                    Text(text = "End Round")
-                }
+            //End round button: Automates end of round actions
+            Button(modifier = Modifier.padding(8.dp), onClick = {
+                roundEndResourcePayout()
+                state.value = !state.value
+            }){
+                Text(text = "End Round")
             }
+
         }
     }
 
 }
 
 @Composable
-fun AddResourcesScreen() {
+fun AddResourcesScreen(navController: NavController) {
     Column(modifier = Modifier
         .background(RGBColor(101, 20, 0))
         .padding(16.dp)
@@ -214,7 +205,7 @@ fun AddResourcesScreen() {
                 ResourceTile(name = "Credits",
                     icon = ImageVector.vectorResource(R.drawable.credit_icon))
 
-                ProductionRow(credits)
+                AddRemoveRow(credits)
             }
             //Steel
             Column(
@@ -224,7 +215,7 @@ fun AddResourcesScreen() {
             ) {
                 ResourceTile(name = "Steel",
                     icon = ImageVector.vectorResource(R.drawable.steel_icon))
-                ProductionRow(steel)
+                AddRemoveRow(steel)
             }
         }
         //Row 2
@@ -243,7 +234,7 @@ fun AddResourcesScreen() {
             ) {
                 ResourceTile(name = "Titanium",
                     icon = ImageVector.vectorResource(R.drawable.titanium_icon))
-                ProductionRow(titanium)
+                AddRemoveRow(titanium)
             }
             //Plants
             Column(
@@ -253,7 +244,7 @@ fun AddResourcesScreen() {
             ) {
                 ResourceTile(name = "Plants",
                     icon = ImageVector.vectorResource(R.drawable.plants_icon))
-                ProductionRow(plants)
+                AddRemoveRow(plants)
             }
         }
         //Row 3
@@ -272,7 +263,7 @@ fun AddResourcesScreen() {
             ) {
                 ResourceTile(name = "Energy",
                     icon = ImageVector.vectorResource(R.drawable.energy_icon))
-                ProductionRow(energy)
+                AddRemoveRow(energy)
             }
             //Heat
             Column(
@@ -282,8 +273,12 @@ fun AddResourcesScreen() {
             ) {
                 ResourceTile(name = "Heat",
                     icon = ImageVector.vectorResource(R.drawable.heat_icon))
-                ProductionRow(heat)
+                AddRemoveRow(heat)
             }
+        }
+        Button(modifier = Modifier.padding(8.dp), onClick = {
+            navController.navigate(Screen.MainScreen.route)}) {
+            Text(text = "Save Changes")
         }
     }
 }
@@ -321,13 +316,13 @@ fun ResourceProduction(modifier: Modifier = Modifier, resource: Resource){
 
 @Composable
 fun ProductionRow(resource: Resource){
-    val i = remember { mutableStateOf(0) }
-    key(i.value){
+    val i = remember { mutableIntStateOf(0) }
+    key(i.intValue){
         Row{
             IconButton(onClick = {
                 resource.setProduction(resource.getProduction() - 1)
                 println(resource.getProduction())
-                i.value = resource.getProduction()
+                i.intValue = resource.getProduction()
             }) {
                 Icon(imageVector = Icons.Default.ArrowBack ,
                     contentDescription = null)
@@ -341,7 +336,35 @@ fun ProductionRow(resource: Resource){
             IconButton(onClick = {
                 resource.setProduction(resource.getProduction() + 1)
                 println(resource.getProduction())
-                i.value = resource.getProduction()
+                i.intValue = resource.getProduction()
+            }) {
+                Icon(imageVector = Icons.Default.ArrowForward ,
+                    contentDescription = null)
+            }
+        }
+    }
+}
+
+@Composable
+fun AddRemoveRow(resource: Resource){
+    val i = remember { mutableIntStateOf(0) }
+    key(i.intValue){
+        Row{
+            IconButton(onClick = {
+                resource.setValue(resource.getValue() - 1)
+                println(resource.getValue())
+                i.intValue = resource.getValue()
+            }) {
+                Icon(imageVector = Icons.Default.ArrowBack ,
+                    contentDescription = null)
+            }
+            ResourceQuantity(resource = resource,
+                modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+
+            IconButton(onClick = {
+                resource.setValue(resource.getValue() + 1)
+                println(resource.getValue())
+                i.intValue = resource.getValue()
             }) {
                 Icon(imageVector = Icons.Default.ArrowForward ,
                     contentDescription = null)
