@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -82,7 +84,8 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Credits",
+                    ResourceTile(
+                        name = "Credits",
                         icon = ImageVector.vectorResource(R.drawable.credit_icon))
 
                     ProductionRow(credits)
@@ -93,7 +96,8 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Steel",
+                    ResourceTile(
+                        name = "Steel",
                         icon = ImageVector.vectorResource(R.drawable.steel_icon))
                     ProductionRow(steel)
                 }
@@ -112,7 +116,8 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Titanium",
+                    ResourceTile(
+                        name = "Titanium",
                         icon = ImageVector.vectorResource(R.drawable.titanium_icon))
                     ProductionRow(titanium)
                 }
@@ -122,7 +127,8 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Plants",
+                    ResourceTile(
+                        name = "Plants",
                         icon = ImageVector.vectorResource(R.drawable.plants_icon))
                     ProductionRow(plants)
                 }
@@ -141,9 +147,23 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Energy",
+                    ModifiableResourceTile(
+                        modifier = Modifier
+                            .padding(32.dp, 16.dp, 0.dp, 0.dp)
+                            .size(125.dp),
+                        name = "Energy",
                         icon = ImageVector.vectorResource(R.drawable.energy_icon))
-                    ProductionRow(energy)
+
+                    Box(modifier = Modifier.offset(16.dp)){
+                        ProductionRow(energy)
+                    }
+
+                }
+                Box(modifier = Modifier.size(48.dp)) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(R.drawable.yellow_arrow_icon),
+                        contentDescription = "Yellow Arrow"
+                    )
                 }
                 //Heat
                 Column(
@@ -151,9 +171,17 @@ fun MainScreen(navController: NavController){
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
-                    ResourceTile(name = "Heat",
+                    ModifiableResourceTile(
+                        modifier = Modifier
+                            .padding(0.dp, 16.dp, 32.dp, 0.dp)
+                            .size(125.dp),
+                        name = "Heat",
                         icon = ImageVector.vectorResource(R.drawable.heat_icon))
-                    ProductionRow(heat)
+
+                    Box(modifier = Modifier.offset((-16).dp)){
+                        ProductionRow(heat)
+                    }
+
                 }
             }
 
@@ -213,7 +241,8 @@ fun AddResourcesScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                ResourceTile(name = "Steel",
+                ResourceTile(
+                    name = "Steel",
                     icon = ImageVector.vectorResource(R.drawable.steel_icon))
                 AddRemoveRow(steel)
             }
@@ -232,7 +261,8 @@ fun AddResourcesScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                ResourceTile(name = "Titanium",
+                ResourceTile(
+                    name = "Titanium",
                     icon = ImageVector.vectorResource(R.drawable.titanium_icon))
                 AddRemoveRow(titanium)
             }
@@ -242,7 +272,8 @@ fun AddResourcesScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                ResourceTile(name = "Plants",
+                ResourceTile(
+                    name = "Plants",
                     icon = ImageVector.vectorResource(R.drawable.plants_icon))
                 AddRemoveRow(plants)
             }
@@ -261,7 +292,8 @@ fun AddResourcesScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                ResourceTile(name = "Energy",
+                ResourceTile(
+                    name = "Energy",
                     icon = ImageVector.vectorResource(R.drawable.energy_icon))
                 AddRemoveRow(energy)
             }
@@ -271,12 +303,15 @@ fun AddResourcesScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                ResourceTile(name = "Heat",
+                ResourceTile(
+                    name = "Heat",
                     icon = ImageVector.vectorResource(R.drawable.heat_icon))
                 AddRemoveRow(heat)
             }
         }
-        Button(modifier = Modifier.padding(8.dp), onClick = {
+        Button(
+            modifier = Modifier.padding(8.dp),
+            onClick = {
             navController.navigate(Screen.MainScreen.route)}) {
             Text(text = "Save Changes")
         }
@@ -285,11 +320,21 @@ fun AddResourcesScreen(navController: NavController) {
 
 @Composable
 fun ResourceTile(name: String, icon: ImageVector){
-    Icon(imageVector = icon ,
+    Icon(
+        imageVector = icon ,
         contentDescription = name ,
         modifier = Modifier
             .padding(16.dp, 16.dp, 16.dp, 0.dp)
             .size(125.dp) ,
+        tint = Color.Unspecified)
+}
+
+@Composable
+fun ModifiableResourceTile(modifier: Modifier, name: String, icon: ImageVector){
+    Icon(
+        imageVector = icon ,
+        contentDescription = name ,
+        modifier = modifier,
         tint = Color.Unspecified)
 }
 
@@ -350,23 +395,28 @@ fun AddRemoveRow(resource: Resource){
     val i = remember { mutableIntStateOf(0) }
     key(i.intValue){
         Row{
-            IconButton(onClick = {
+            IconButton(
+                onClick = {
                 resource.setValue(resource.getValue() - 1)
                 println(resource.getValue())
                 i.intValue = resource.getValue()
             }) {
-                Icon(imageVector = Icons.Default.ArrowBack ,
+                Icon(
+                    imageVector = Icons.Default.ArrowBack ,
                     contentDescription = null)
             }
-            ResourceQuantity(resource = resource,
+            ResourceQuantity(
+                resource = resource,
                 modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
 
-            IconButton(onClick = {
+            IconButton(
+                onClick = {
                 resource.setValue(resource.getValue() + 1)
                 println(resource.getValue())
                 i.intValue = resource.getValue()
             }) {
-                Icon(imageVector = Icons.Default.ArrowForward ,
+                Icon(
+                    imageVector = Icons.Default.ArrowForward ,
                     contentDescription = null)
             }
         }
@@ -378,6 +428,8 @@ fun roundEndResourcePayout(){
     steel.setValue(steel.getValue() + steel.getProduction())
     titanium.setValue(titanium.getValue() + titanium.getProduction())
     plants.setValue(plants.getValue() + plants.getProduction())
-    energy.setValue(energy.getValue() + energy.getProduction())
-    heat.setValue(heat.getValue() + heat.getProduction())
+    val energyToHeat = energy.getValue()
+    energy.setValue(energy.getProduction())
+    heat.setValue(heat.getValue() + heat.getProduction() + energyToHeat)
+
 }
